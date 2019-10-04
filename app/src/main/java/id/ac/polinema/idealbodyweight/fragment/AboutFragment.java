@@ -26,8 +26,6 @@ public class AboutFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
     private String name;
-    private String mParam2;
-
 
     public AboutFragment() {
         // Required empty public constructor
