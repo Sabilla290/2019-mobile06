@@ -52,7 +52,7 @@ public class BrocaIndexFragment extends Fragment {
                             int height = Integer.parseInt(heightString);
                             int gender = (checkedId == R.id.radio_male) ? BrocaIndex.MALE : BrocaIndex.FEMALE;
                             BrocaIndex brocaIndex = new BrocaIndex(gender, height);
-                            mListener.onCalculateBrocaIndexClicked(brocaIndex.getIndex());
+                            mListener.onCalculateBrocaIndexClicked(brocaIndex.getIndex(), ResultFragment.BROCA_TAG);
                         } else {
                             Toast.makeText(getActivity(), "Please select gender and input your height", Toast.LENGTH_SHORT).show();
                         }
@@ -81,18 +81,9 @@ public class BrocaIndexFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onCalculateBrocaIndexClicked(float index);
+        void onCalculateBrocaIndexClicked(float index, String tag);
     }
 }

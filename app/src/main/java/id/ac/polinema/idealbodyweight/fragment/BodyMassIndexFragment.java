@@ -1,60 +1,61 @@
 package id.ac.polinema.idealbodyweight.fragment;
 
+
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import id.ac.polinema.idealbodyweight.R;
+import id.ac.polinema.idealbodyweight.util.BodyMassIndex;
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MenuFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
  */
-public class MenuFragment extends Fragment {
+public class BodyMassIndexFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
-
-    public MenuFragment() {
+    public BodyMassIndexFragment() {
         // Required empty public constructor
     }
 
 
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_menu, container, false);
+        View view = inflater.inflate(R.layout.fragment_body_mass_index, container, false);
+        final EditText massText = view.findViewById(R.id.input_mass);
+        final EditText heightText = view.findViewById(R.id.input_height);
 
-        Button brocaButton = view.findViewById(R.id.button_broca);
-        Button bmiButton = view.findViewById(R.id.button_bmi);
-
-        brocaButton.setOnClickListener(new View.OnClickListener() {
+        Button calculateButton = view.findViewById(R.id.button_calculate);
+        calculateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mListener != null) {
-                    mListener.onBrocaIndexButtonClicked();
+                    String massString = massText.getText().toString();
+                    String heightString = heightText.getText().toString();
+
+                    if (!TextUtils.isEmpty(massString) && !TextUtils.isEmpty(heightString)) {
+                        float height = Float.valueOf(heightString);
+                        float mass = Float.valueOf(massString);
+
+                        BodyMassIndex bmi = new BodyMassIndex(mass, height);
+                        mListener.onCalculateBMIClicked(bmi.getIndex(), ResultFragment.BMI_TAG);
+                    } else {
+                        Toast.makeText(getActivity(), "Please input your height and mass", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             }
         });
-
-        bmiButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener != null) {
-                    mListener.onBodyMassIndexButtonClicked();
-                }
-            }
-        });
-
         return view;
     }
 
@@ -75,11 +76,11 @@ public class MenuFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onBrocaIndexButtonClicked();
-        void onBodyMassIndexButtonClicked();
+        void onCalculateBMIClicked(float index, String tag);
     }
-
 
 }
